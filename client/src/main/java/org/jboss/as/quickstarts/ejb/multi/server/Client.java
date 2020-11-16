@@ -48,8 +48,8 @@ public class Client {
         p.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
         //p.put(Context.PROVIDER_URL, "remote+http://jbseti:9080");
         p.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
-        p.put(Context.SECURITY_PRINCIPAL, "jboss");
-        p.put(Context.SECURITY_CREDENTIALS, "SVGX4gae0GNv4G3jijHsIw");
+//        p.put(Context.SECURITY_PRINCIPAL, "jboss");
+//        p.put(Context.SECURITY_CREDENTIALS, "SVGX4gae0GNv4G3jijHsIw");
         InitialContext context = new InitialContext(p);
 
         final String rcal = "ejb:/app-main/MainAppBean!" + MainApp.class.getName();

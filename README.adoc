@@ -1,0 +1,97 @@
+include::../shared-doc/attributes.adoc[]
+
+= ejb-multi-server: EJB Communication Across Servers example for Dynatrace
+:author: Anthony Durussel
+:technologies: EJB, EAR
+
+[abstract]
+The `ejb-multi-server` project provide an example of Remote EJB Calls made from standalone client to Widlfly Server version 17.0.0
+
+
+== What is it?
+
+The `ejb-multi-server` quickstart demonstrates communication between applications deployed to different {productNameFull} servers. Each application is deployed as an EAR and contains a simple EJB bean. The only function of each bean is to log the invocation.
+
+This example consists of the following Maven projects, each with a shared parent:
+
+[cols="40%,60%",options="headers"]
+|===
+|Project |Description
+
+|`app-main`
+|An application that can be called by the client. It can also call the different sub-applications.
+
+a|`app-one`
+
+`app-two`
+|These simple applications contain one or two EJB. The EJB simply logs a statement on a method call and returns a text.
+
+|`client`
+|This project builds the standalone client and executes it.
+|===
+
+The root `pom.xml` builds each of the subprojects in an appropriate order.
+
+
+[[start_with_a_clean_server_install]]
+== Start with a Clean Server Install
+
+It is important to start with a clean version of Wildfly server version 17.0.0. Make sure you unzip or install a fresh Wildlfy instance
+
+to start the server run the following command:
+
+For Linux/Mac User
+[source,options="nowrap"]
+----
+$ __{jbossHomeName}__/bin/standalone.sh
+----
+
+For Windows user
+[source,options="nowrap"]
+----
+$ __{jbossHomeName}__/bin/standalone.bat
+----
+
+[[build_and_deploy_the_quickstart]]
+== Build and Deploy the Quickstart
+
+. Make sure you have started the wildfly server successfully as described above.
+. Open a terminal and navigate to the root directory of this quickstart.
+. Type this command to build the artifacts.
++
+[source,options="nowrap"]
+----
+$ mvn clean install
+----
++
+You should see `BUILD SUCCESS` at the end of the build `SUCCESS` messages for each component.
+
+. In the same terminal, deploy the applications using  the following command.
++
+[source,subs="+quotes,attributes+",options="nowrap"]
+----
+$ mvn wildlfy:deploy
+----
+
++
+This deploys the `app-*.war` files to the server.
+
+
+[[access_the_remote_client_application]]
+== Access the Remote Client Application
+
+This example shows how to invoke an EJB from a remote standalone application.
+
+. Make sure that the deployments are successful as described above.
+. Navigate to the quickstart `client/` subdirectory.
+. Type this command to run the application:
++
+[source,options="nowrap"]
+----
+$ mvn exec:java
+----
++
+The client will output the result from the server
+
++
+If you monitor these calls with Dynatrace you should be able to see the EJB call made on AppOne and AppTwo but the one made on AppOneRp which use ejb-jar.xml to expose the EJB to wildfly server.
